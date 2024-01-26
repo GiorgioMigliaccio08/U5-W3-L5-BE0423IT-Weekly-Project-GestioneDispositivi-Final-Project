@@ -19,36 +19,22 @@ import java.util.UUID;
 @Service
 public class UtenteService {
     @Autowired
-    private UtenteDAO utenteDAO;
-
+    private UtenteDAO usersDAO;
 
     public Page<Utente> getUsers(int page, int size, String orderBy) {
-
         if (size >= 100) size = 100;
         Pageable pageable = PageRequest.of(page, size, Sort.by(orderBy));
-        return utenteDAO.findAll(pageable);
+        return usersDAO.findAll(pageable);
     }
 
-    public Utente save(NewUtenteDTO body) {
-        utenteDAO.findByEmail(body.email()).ifPresent(user -> {
-            throw new BadRequestException("L'email " + user.getEmail() + " è già in uso!");
-        });
-
-        Utente newUser = new Utente();
-        newUser.setSurname(body.surname());
-        newUser.setName(body.name());
-        newUser.setEmail(body.email());
-        newUser.setPassword(body.password());
-        return utenteDAO.save(newUser);
-    }
 
     public Utente findById(UUID id) {
-        return utenteDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
+        return usersDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
     public void findByIdAndDelete(UUID id) {
         Utente found = this.findById(id);
-        utenteDAO.delete(found);
+        usersDAO.delete(found);
     }
 
     public Utente findByIdAndUpdate(UUID id, Utente body) {
@@ -57,15 +43,12 @@ public class UtenteService {
         found.setName(body.getName());
         found.setEmail(body.getEmail());
         found.setPassword(body.getPassword());
-        return utenteDAO.save(found);
+        return usersDAO.save(found);
     }
 
 
     public Utente findByEmail(String email) throws NotFoundException {
-        return utenteDAO.findByEmail(email).orElseThrow(() -> new NotFoundException("Utente con email " + email + " non trovata!"));
+        return usersDAO.findByEmail(email).orElseThrow(() -> new NotFoundException("Utente con email " + email + " non trovata!"));
     }
 
-    public Page<Utente> getUtente(int page, int size, String orderBy) {
-        return null;
-    }
 }

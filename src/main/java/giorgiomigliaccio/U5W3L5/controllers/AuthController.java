@@ -13,15 +13,13 @@ import giorgiomigliaccio.U5W3L5.payloads.NewUtenteResponseDTO;
 import giorgiomigliaccio.U5W3L5.payloads.UtenteLoginDTO;
 import giorgiomigliaccio.U5W3L5.payloads.UtenteLoginResponseDTO;
 import giorgiomigliaccio.U5W3L5.services.AuthService;
-import giorgiomigliaccio.U5W3L5.services.UtenteService;
+
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    AuthService authService;
-    @Autowired
-    UtenteService usersService;
+    private AuthService authService;
 
     @PostMapping("/login")
     public UtenteLoginResponseDTO login(@RequestBody UtenteLoginDTO body) {
@@ -37,8 +35,7 @@ public class AuthController {
             System.out.println(validation.getAllErrors());
             throw new BadRequestException("Ci sono errori nel payload!");
         } else {
-            Utente newUser = usersService.save(newUserPayload);
-
+            Utente newUser = authService.save(newUserPayload);
             return new NewUtenteResponseDTO(newUser.getId());
         }
     }

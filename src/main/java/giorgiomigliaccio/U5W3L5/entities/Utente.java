@@ -33,6 +33,10 @@ public class Utente {
                 inverseJoinColumns = @JoinColumn(name = "evento_id"))
         private Set<Evento> eventiPartecipati = new HashSet<>();
 
+        public Utente() {
+
+        }
+
         public String getName() {
                 return name;
         }
@@ -93,4 +97,8 @@ public class Utente {
                         ", eventiPartecipati=" + eventiPartecipati +
                         '}';
         }
+
+    public UUID getId() {
+                return null;
+    }
 }
